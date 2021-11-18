@@ -1,11 +1,13 @@
 package com.msy.blogsystem.domain.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Service
 public class UserService implements UserFindService{
 
     private final PasswordEncoder passwordEncoder;
