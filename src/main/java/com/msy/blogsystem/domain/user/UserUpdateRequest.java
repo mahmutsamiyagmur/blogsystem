@@ -3,7 +3,6 @@ package com.msy.blogsystem.domain.user;
 
 import java.util.Optional;
 
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 public class UserUpdateRequest {
@@ -24,7 +23,7 @@ public class UserUpdateRequest {
         this.passwordToUpdate = builder.passwordToUpdate;
         this.imageToUpdate = builder.imageToUpdate;
         this.bioToUpdate = builder.bioToUpdate;
-
+        
     }
 
     Optional<Email> getEmailToUpdate() {

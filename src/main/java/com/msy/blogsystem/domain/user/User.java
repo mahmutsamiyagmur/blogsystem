@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -26,6 +28,12 @@ public class User {
 
     @Embedded
     private Password password;
+
+    @JoinTable(name = "user_following",
+            joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "id"))
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private Set<User> followingUsers = new HashSet<>();
 
     private User(Email email, Profile profile, Password password) {
         this.email = email;
@@ -56,5 +64,30 @@ public class User {
 
     public void setImage(Image image) {
         profile.setImage(image);
+    }
+
+    public Profile viewProfile(User user) {
+        return user.profile.withFollowing(followingUsers.contains(user));
+    }
+
+    /**
+     * Remove one user which is followed
+     * @param followee user who is followed.
+     *
+     * @return
+     */
+    User unfollowUser(User followee) {
+        followingUsers.remove(followee);
+        return this;
+    }
+
+    /**
+     * Add followee to the following user list.
+     * @param followee user that is tracked.
+     * @return User with updated following user list.
+     */
+    public User followUser(User followee) {
+        followingUsers.add(followee);
+        return this;
     }
 }
